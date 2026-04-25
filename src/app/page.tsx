@@ -72,11 +72,11 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Bento grid */}
-        <section id="features" className="mt-24 bento auto-rows-[180px]">
-          {/* Big card — invoices */}
+        {/* Big-card row */}
+        <section id="features" className="mt-24 grid grid-cols-12 gap-4">
+          {/* Invoices showcase */}
           <div
-            className="col-span-12 md:col-span-7 row-span-2 card p-8 flex flex-col justify-between overflow-hidden relative"
+            className="col-span-12 md:col-span-7 card p-8 flex flex-col gap-8"
             style={{ background: "linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%)" }}
           >
             <div>
@@ -84,18 +84,16 @@ export default async function Home() {
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                 Invoicing
               </div>
-              <h3 className="text-3xl font-semibold tracking-tight">
-                Send invoices that
-                <br />
-                actually look professional.
+              <h3 className="text-3xl font-semibold tracking-tight leading-tight">
+                Send invoices that actually look professional.
               </h3>
               <p className="mt-3 text-muted max-w-md">
                 Auto-numbered. Tax-aware. PDF in one click. Status moves from
                 draft → sent → paid as you work.
               </p>
             </div>
-            <div className="flex items-end justify-between gap-6">
-              <div className="space-y-2 text-sm">
+            <div className="flex items-end justify-between gap-6 mt-auto">
+              <div className="space-y-1.5 text-sm">
                 <Row label="Subtotal" value="$1,000.00" />
                 <Row label="Tax (10%)" value="$100.00" />
                 <Row label="Total" value="$1,100.00" bold />
@@ -107,9 +105,9 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* AI receipts — gradient card */}
+          {/* AI receipts */}
           <div
-            className="col-span-12 md:col-span-5 row-span-2 card p-8 text-white flex flex-col justify-between overflow-hidden"
+            className="col-span-12 md:col-span-5 card p-8 text-white flex flex-col gap-8"
             style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
           >
             <div>
@@ -120,57 +118,44 @@ export default async function Home() {
               <h3 className="text-3xl font-semibold tracking-tight">
                 Snap. Done.
               </h3>
-              <p className="mt-3 text-white/80 max-w-sm">
+              <p className="mt-3 text-white/80">
                 Upload a receipt photo. Claude reads the vendor, amount, date,
                 and category. You confirm. Move on with your day.
               </p>
             </div>
-            <div className="flex items-center gap-3 text-sm">
+            <div className="flex items-center gap-2 text-sm flex-wrap mt-auto">
               <span className="px-3 py-1 rounded-full bg-white/15 backdrop-blur">
-                📸 Photo
+                Photo
               </span>
-              <span>→</span>
+              <span aria-hidden>→</span>
               <span className="px-3 py-1 rounded-full bg-white/15 backdrop-blur font-mono text-xs">
                 {`{ vendor, amount }`}
               </span>
             </div>
           </div>
+        </section>
 
-          {/* Workspaces */}
-          <div className="col-span-12 md:col-span-4 card p-6">
-            <div className="text-3xl mb-2">👥</div>
-            <h3 className="font-semibold text-lg tracking-tight">
-              Multiple workspaces
-            </h3>
-            <p className="text-sm text-muted mt-1">
-              One business or many. Each gets its own clean set of books.
-            </p>
-          </div>
-
-          {/* PDF */}
-          <div className="col-span-12 md:col-span-4 card p-6">
-            <div className="text-3xl mb-2">📄</div>
-            <h3 className="font-semibold text-lg tracking-tight">
-              PDF in one click
-            </h3>
-            <p className="text-sm text-muted mt-1">
-              Branded, tidy, ready to email. No manual formatting.
-            </p>
-          </div>
-
-          {/* Free */}
-          <div
-            className="col-span-12 md:col-span-4 card p-6 text-white"
-            style={{ background: "linear-gradient(135deg, #00875a 0%, #10b981 100%)" }}
-          >
-            <div className="text-3xl mb-2">✦</div>
-            <h3 className="font-semibold text-lg tracking-tight">
-              Free to start
-            </h3>
-            <p className="text-sm text-white/80 mt-1">
-              No credit card. Sign up in 30 seconds.
-            </p>
-          </div>
+        {/* Small-card row */}
+        <section className="mt-4 grid grid-cols-12 gap-4">
+          <SmallCard
+            title="Multiple workspaces"
+            description="One business or many. Each gets its own clean set of books."
+            iconBg="bg-blue-100"
+            iconFg="text-accent"
+            iconPath="M16 11a4 4 0 10-8 0 4 4 0 008 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+          <SmallCard
+            title="PDF in one click"
+            description="Branded, tidy, ready to email. No manual formatting."
+            iconBg="bg-amber-100"
+            iconFg="text-amber-600"
+            iconPath="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+          <SmallCardGradient
+            title="Free to start"
+            description="No credit card. Sign up in 30 seconds."
+            gradient="linear-gradient(135deg, #00875a 0%, #10b981 100%)"
+          />
         </section>
 
         {/* CTA */}
@@ -205,6 +190,73 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
     <div className={`flex justify-between gap-8 ${bold ? "font-semibold border-t border-border/60 pt-2" : "text-muted"}`}>
       <span>{label}</span>
       <span className="font-mono tabular">{value}</span>
+    </div>
+  );
+}
+
+function SmallCard({
+  title,
+  description,
+  iconBg,
+  iconFg,
+  iconPath,
+}: {
+  title: string;
+  description: string;
+  iconBg: string;
+  iconFg: string;
+  iconPath: string;
+}) {
+  return (
+    <div className="col-span-12 sm:col-span-6 md:col-span-4 card p-6">
+      <div className={`w-10 h-10 rounded-xl ${iconBg} ${iconFg} flex items-center justify-center mb-4`}>
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <path d={iconPath} />
+        </svg>
+      </div>
+      <h3 className="font-semibold text-lg tracking-tight">{title}</h3>
+      <p className="text-sm text-muted mt-1">{description}</p>
+    </div>
+  );
+}
+
+function SmallCardGradient({
+  title,
+  description,
+  gradient,
+}: {
+  title: string;
+  description: string;
+  gradient: string;
+}) {
+  return (
+    <div
+      className="col-span-12 sm:col-span-6 md:col-span-4 card p-6 text-white"
+      style={{ background: gradient }}
+    >
+      <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center mb-4">
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
+        </svg>
+      </div>
+      <h3 className="font-semibold text-lg tracking-tight">{title}</h3>
+      <p className="text-sm text-white/80 mt-1">{description}</p>
     </div>
   );
 }
