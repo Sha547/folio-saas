@@ -62,6 +62,7 @@ model Organization {
   memberships Membership[]
   clients     Client[]
   invoices    Invoice[]
+  expenses    Expense[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -119,4 +120,20 @@ model InvoiceItem {
   amount      Float
   invoiceId   String
   invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id             String       @id @default(cuid())
+  vendor         String
+  amount         Float
+  category       String?
+  date           DateTime
+  notes          String?
+  receiptKey     String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId, date])
 }

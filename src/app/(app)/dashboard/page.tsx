@@ -10,26 +10,35 @@ const currency = new Intl.NumberFormat("en-US", {
 export default async function DashboardPage() {
   const { user, organization } = await requireWorkspace();
 
-  const [invoiceCount, outstandingAgg, paidAgg, recentInvoices] = await Promise.all([
-    db.invoice.count({ where: { organizationId: organization.id } }),
-    db.invoice.aggregate({
-      where: {
-        organizationId: organization.id,
-        status: { in: ["draft", "sent", "overdue"] },
-      },
-      _sum: { total: true },
-    }),
-    db.invoice.aggregate({
-      where: { organizationId: organization.id, status: "paid" },
-      _sum: { total: true },
-    }),
-    db.invoice.findMany({
-      where: { organizationId: organization.id },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      include: { client: true },
-    }),
-  ]);
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  const [invoiceCount, outstandingAgg, paidAgg, recentInvoices, expensesMonthAgg] =
+    await Promise.all([
+      db.invoice.count({ where: { organizationId: organization.id } }),
+      db.invoice.aggregate({
+        where: {
+          organizationId: organization.id,
+          status: { in: ["draft", "sent", "overdue"] },
+        },
+        _sum: { total: true },
+      }),
+      db.invoice.aggregate({
+        where: { organizationId: organization.id, status: "paid" },
+        _sum: { total: true },
+      }),
+      db.invoice.findMany({
+        where: { organizationId: organization.id },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+        include: { client: true },
+      }),
+      db.expense.aggregate({
+        where: { organizationId: organization.id, date: { gte: startOfMonth } },
+        _sum: { amount: true },
+      }),
+    ]);
 
   return (
     <div className="space-y-6">
@@ -42,7 +51,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat label="Total invoices" value={String(invoiceCount)} />
         <Stat
           label="Outstanding"
@@ -51,6 +60,10 @@ export default async function DashboardPage() {
         <Stat
           label="Paid (lifetime)"
           value={currency.format(paidAgg._sum.total ?? 0)}
+        />
+        <Stat
+          label="Expenses (this month)"
+          value={currency.format(expensesMonthAgg._sum.amount ?? 0)}
         />
       </section>
 

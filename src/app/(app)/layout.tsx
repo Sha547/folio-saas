@@ -20,6 +20,7 @@ export default async function AppLayout({
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="/clients">Clients</NavLink>
             <NavLink href="/invoices">Invoices</NavLink>
+            <NavLink href="/expenses">Expenses</NavLink>
           </nav>
           <div className="ml-auto flex items-center gap-3 text-sm">
             <span className="text-gray-500 hidden sm:inline">
