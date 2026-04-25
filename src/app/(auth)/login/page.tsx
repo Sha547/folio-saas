@@ -3,22 +3,34 @@ import LoginForm from "./login-form";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 p-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow p-8 space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Log in to your invoice workspace.
-          </p>
-        </div>
-        <LoginForm />
-        <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-blue-600 hover:underline">
-            Sign up
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="border-b border-hairline">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <Link href="/" className="serif text-2xl">
+            Ledger
           </Link>
-        </p>
-      </div>
+          <Link href="/signup" className="text-sm hover:underline underline-offset-4">
+            No account? <span className="font-medium">Sign up →</span>
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            Returning
+          </p>
+          <h1 className="serif text-4xl leading-tight">
+            Welcome back.
+          </h1>
+          <p className="mt-3 text-muted">
+            Pick up where you left off.
+          </p>
+          <div className="mt-10">
+            <LoginForm />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

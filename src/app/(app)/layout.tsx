@@ -10,26 +10,29 @@ export default async function AppLayout({
   const { user, organization } = await requireWorkspace();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-6">
-          <Link href="/dashboard" className="font-semibold">
-            {organization.name}
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="border-b border-hairline bg-background sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-8">
+          <Link href="/dashboard" className="flex items-baseline gap-2">
+            <span className="serif text-xl">Ledger</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted hidden sm:inline">
+              / {organization.slug}
+            </span>
           </Link>
-          <nav className="flex gap-4 text-sm">
-            <NavLink href="/dashboard">Dashboard</NavLink>
+          <nav className="flex gap-6 text-sm">
+            <NavLink href="/dashboard">Overview</NavLink>
             <NavLink href="/clients">Clients</NavLink>
             <NavLink href="/invoices">Invoices</NavLink>
             <NavLink href="/expenses">Expenses</NavLink>
           </nav>
-          <div className="ml-auto flex items-center gap-3 text-sm">
-            <span className="text-gray-500 hidden sm:inline">
-              {user.name ?? user.email}
+          <div className="ml-auto flex items-center gap-4 text-sm">
+            <span className="font-mono text-xs text-muted hidden sm:inline">
+              {user.email}
             </span>
             <form action={signOutAction}>
               <button
                 type="submit"
-                className="px-3 py-1.5 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="text-xs hover:underline underline-offset-4"
               >
                 Sign out
               </button>
@@ -37,7 +40,7 @@ export default async function AppLayout({
           </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
+      <main className="max-w-6xl mx-auto px-6 py-12 w-full flex-1">{children}</main>
     </div>
   );
 }
@@ -46,7 +49,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+      className="text-foreground/70 hover:text-foreground hover:underline underline-offset-[6px] decoration-1"
     >
       {children}
     </Link>

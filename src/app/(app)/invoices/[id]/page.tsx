@@ -27,98 +27,97 @@ export default async function InvoicePage({
   if (!invoice) notFound();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{invoice.number}</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Issued {invoice.issueDate.toLocaleDateString()} • Due{" "}
-            {invoice.dueDate.toLocaleDateString()}
+    <div className="max-w-3xl space-y-12">
+      <div>
+        <Link
+          href="/invoices"
+          className="font-mono text-xs uppercase tracking-widest text-muted hover:underline underline-offset-4"
+        >
+          ← All invoices
+        </Link>
+        <div className="flex items-end justify-between mt-4">
+          <div>
+            <p className="font-mono text-sm text-muted">{invoice.number}</p>
+            <h1 className="serif text-5xl mt-2">
+              {currency.format(invoice.total)}
+            </h1>
+            <p className="mt-3 font-mono text-xs uppercase tracking-widest text-muted">
+              Due {invoice.dueDate.toLocaleDateString()}
+            </p>
+          </div>
+          <Status status={invoice.status} large />
+        </div>
+      </div>
+
+      <section className="border-y border-hairline grid grid-cols-1 sm:grid-cols-2">
+        <div className="border-r border-hairline px-6 py-8">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+            Bill to
+          </p>
+          <p className="serif text-2xl mt-3">{invoice.client.name}</p>
+          {invoice.client.email && (
+            <p className="text-sm text-muted mt-1">{invoice.client.email}</p>
+          )}
+          {invoice.client.address && (
+            <p className="text-sm text-muted mt-1 whitespace-pre-line">
+              {invoice.client.address}
+            </p>
+          )}
+        </div>
+        <div className="px-6 py-8">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+            From
+          </p>
+          <p className="serif text-2xl mt-3">{organization.name}</p>
+          <p className="text-sm text-muted mt-1 font-mono">
+            Issued {invoice.issueDate.toLocaleDateString()}
           </p>
         </div>
-        <StatusBadge status={invoice.status} />
-      </div>
+      </section>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 space-y-6">
-        <div className="grid sm:grid-cols-2 gap-6">
-          <div>
-            <p className="text-xs uppercase text-gray-500">Bill to</p>
-            <p className="font-medium mt-1">{invoice.client.name}</p>
-            {invoice.client.email && (
-              <p className="text-sm text-gray-500">{invoice.client.email}</p>
-            )}
-            {invoice.client.address && (
-              <p className="text-sm text-gray-500 whitespace-pre-line">
-                {invoice.client.address}
-              </p>
-            )}
-          </div>
-          <div className="text-right">
-            <p className="text-xs uppercase text-gray-500">From</p>
-            <p className="font-medium mt-1">{organization.name}</p>
-          </div>
+      <section>
+        <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted mb-4">
+          Line items
+        </h2>
+        <div className="border-t border-hairline">
+          {invoice.items.map((it) => (
+            <div
+              key={it.id}
+              className="grid grid-cols-12 py-4 border-b border-hairline items-baseline gap-2"
+            >
+              <div className="col-span-7">{it.description}</div>
+              <div className="col-span-2 font-mono tabular text-sm text-muted text-right">
+                {it.quantity} × {currency.format(it.unitPrice)}
+              </div>
+              <div className="col-span-3 font-mono tabular text-right">
+                {currency.format(it.amount)}
+              </div>
+            </div>
+          ))}
         </div>
 
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-800 text-left">
-            <tr>
-              <th className="px-3 py-2">Description</th>
-              <th className="px-3 py-2 text-right">Qty</th>
-              <th className="px-3 py-2 text-right">Unit price</th>
-              <th className="px-3 py-2 text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {invoice.items.map((it) => (
-              <tr key={it.id}>
-                <td className="px-3 py-2">{it.description}</td>
-                <td className="px-3 py-2 text-right">{it.quantity}</td>
-                <td className="px-3 py-2 text-right">
-                  {currency.format(it.unitPrice)}
-                </td>
-                <td className="px-3 py-2 text-right">
-                  {currency.format(it.amount)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot className="text-sm">
-            <tr>
-              <td colSpan={3} className="px-3 py-2 text-right text-gray-500">
-                Subtotal
-              </td>
-              <td className="px-3 py-2 text-right">
-                {currency.format(invoice.subtotal)}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={3} className="px-3 py-2 text-right text-gray-500">
-                Tax ({invoice.taxRate}%)
-              </td>
-              <td className="px-3 py-2 text-right">
-                {currency.format(invoice.total - invoice.subtotal)}
-              </td>
-            </tr>
-            <tr className="font-semibold border-t">
-              <td colSpan={3} className="px-3 py-2 text-right">
-                Total
-              </td>
-              <td className="px-3 py-2 text-right">
-                {currency.format(invoice.total)}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-
-        {invoice.notes && (
-          <div className="text-sm">
-            <p className="text-xs uppercase text-gray-500">Notes</p>
-            <p className="mt-1 whitespace-pre-line">{invoice.notes}</p>
+        <div className="ml-auto max-w-xs mt-6 space-y-2 font-mono tabular text-sm">
+          <Row label="Subtotal" value={currency.format(invoice.subtotal)} />
+          <Row
+            label={`Tax (${invoice.taxRate}%)`}
+            value={currency.format(invoice.total - invoice.subtotal)}
+          />
+          <div className="border-t border-foreground pt-2 mt-2">
+            <Row label="Total" value={currency.format(invoice.total)} bold />
           </div>
-        )}
-      </div>
+        </div>
+      </section>
 
-      <div className="flex flex-wrap gap-2">
+      {invoice.notes && (
+        <section className="border-t border-hairline pt-6">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted mb-3">
+            Notes
+          </p>
+          <p className="whitespace-pre-line text-muted">{invoice.notes}</p>
+        </section>
+      )}
+
+      <section className="border-t border-hairline pt-6 flex flex-wrap gap-3 items-center">
         <StatusButton id={invoice.id} status="sent" current={invoice.status}>
           Mark as sent
         </StatusButton>
@@ -128,17 +127,11 @@ export default async function InvoicePage({
         <StatusButton id={invoice.id} status="draft" current={invoice.status}>
           Back to draft
         </StatusButton>
-        <Link
-          href="/invoices"
-          className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-        >
-          ← All invoices
-        </Link>
         <a
           href={`/api/invoices/${invoice.id}/pdf`}
           target="_blank"
           rel="noopener"
-          className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="border border-foreground px-3 py-1.5 text-sm hover:bg-foreground hover:text-background"
         >
           Download PDF
         </a>
@@ -146,12 +139,21 @@ export default async function InvoicePage({
           <input type="hidden" name="id" value={invoice.id} />
           <button
             type="submit"
-            className="px-3 py-1.5 border border-red-200 text-red-600 rounded-md text-sm hover:bg-red-50 dark:hover:bg-red-950"
+            className="font-mono text-[10px] uppercase tracking-widest text-muted hover:text-red-700"
           >
             Delete
           </button>
         </form>
-      </div>
+      </section>
+    </div>
+  );
+}
+
+function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
+  return (
+    <div className={`flex justify-between ${bold ? "text-base" : "text-muted"}`}>
+      <span>{label}</span>
+      <span>{value}</span>
     </div>
   );
 }
@@ -174,7 +176,7 @@ function StatusButton({
       <input type="hidden" name="status" value={status} />
       <button
         type="submit"
-        className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="border border-foreground px-3 py-1.5 text-sm hover:bg-foreground hover:text-background"
       >
         {children}
       </button>
@@ -182,19 +184,24 @@ function StatusButton({
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  const colors: Record<string, string> = {
-    draft: "bg-gray-100 text-gray-700",
-    sent: "bg-blue-100 text-blue-700",
-    paid: "bg-green-100 text-green-700",
-    overdue: "bg-red-100 text-red-700",
+function Status({ status, large }: { status: string; large?: boolean }) {
+  const tone: Record<string, string> = {
+    draft: "bg-neutral-400",
+    sent: "bg-amber-500",
+    paid: "bg-green-600",
+    overdue: "bg-red-600",
   };
   return (
     <span
-      className={`text-sm px-3 py-1 rounded-full font-medium capitalize ${
-        colors[status] ?? colors.draft
+      className={`inline-flex items-center gap-2 font-mono uppercase tracking-widest text-muted ${
+        large ? "text-xs" : "text-[10px]"
       }`}
     >
+      <span
+        className={`inline-block ${large ? "w-2 h-2" : "w-1.5 h-1.5"} rounded-full ${
+          tone[status] ?? "bg-neutral-400"
+        }`}
+      />
       {status}
     </span>
   );

@@ -14,24 +14,30 @@ export default function NewClientForm() {
   );
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-6">
       <Field label="Name" name="name" required />
       <Field label="Email" name="email" type="email" />
       <Field label="Address" name="address" textarea />
 
-      {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state?.error && (
+        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
+      )}
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex items-center gap-4 pt-2">
         <button
           type="submit"
           disabled={pending}
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-4 py-2 rounded-md font-medium"
+          className="bg-foreground text-background px-5 py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center gap-2"
         >
-          {pending ? "Saving..." : "Save client"}
+          {pending ? "Saving…" : (
+            <>
+              Save client <span aria-hidden>→</span>
+            </>
+          )}
         </button>
         <Link
           href="/clients"
-          className="px-4 py-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="text-sm hover:underline underline-offset-4"
         >
           Cancel
         </Link>
@@ -54,18 +60,18 @@ function Field({
   textarea?: boolean;
 }) {
   const cls =
-    "w-full px-3 py-2 border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500";
+    "mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2";
   return (
-    <div>
-      <label htmlFor={name} className="block text-sm font-medium mb-1">
+    <label className="block">
+      <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
         {label}
-        {required && <span className="text-red-500"> *</span>}
-      </label>
+        {required && " *"}
+      </span>
       {textarea ? (
-        <textarea id={name} name={name} rows={3} className={cls} />
+        <textarea name={name} rows={2} className={cls} />
       ) : (
-        <input id={name} name={name} type={type} required={required} className={cls} />
+        <input name={name} type={type} required={required} className={cls} />
       )}
-    </div>
+    </label>
   );
 }

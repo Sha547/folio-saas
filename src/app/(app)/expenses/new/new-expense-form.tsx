@@ -9,6 +9,9 @@ import {
 
 const categories = ["Food", "Travel", "Office", "Software", "Marketing", "Other"];
 
+const fieldCls =
+  "mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2";
+
 export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
   const [state, formAction, pending] = useActionState<ExpenseActionState, FormData>(
     createExpenseAction,
@@ -49,35 +52,43 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
   }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-8">
       <div>
-        <label className="block text-sm font-medium mb-1">Receipt (optional)</label>
+        <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+          Receipt {aiEnabled && <em className="not-italic text-foreground">(AI will fill the rest)</em>}
+        </span>
         <input
           type="file"
           name="receipt"
           accept="image/*,application/pdf"
           onChange={handleReceiptChange}
-          className="block w-full text-sm file:mr-3 file:px-3 file:py-1.5 file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          className="mt-3 block w-full text-sm file:mr-3 file:px-3 file:py-1.5 file:border file:border-foreground file:bg-transparent file:text-foreground file:hover:bg-foreground file:hover:text-background"
         />
         {parsing && (
-          <p className="text-xs text-blue-600 mt-1">Reading receipt with AI…</p>
+          <p className="text-xs font-mono mt-2">— Reading receipt…</p>
         )}
-        {parseError && <p className="text-xs text-red-600 mt-1">{parseError}</p>}
+        {parseError && (
+          <p className="text-xs font-mono text-red-700 mt-2">— {parseError}</p>
+        )}
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Vendor *</label>
+      <div className="border-t border-hairline pt-8 grid sm:grid-cols-2 gap-8">
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Vendor *
+          </span>
           <input
             name="vendor"
             required
             value={vendor}
             onChange={(e) => setVendor(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={fieldCls}
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Amount *</label>
+        </label>
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Amount *
+          </span>
           <input
             type="number"
             name="amount"
@@ -86,27 +97,31 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
             required
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={`${fieldCls} font-mono tabular`}
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Date *</label>
+        </label>
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Date *
+          </span>
           <input
             type="date"
             name="date"
             required
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={fieldCls}
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Category</label>
+        </label>
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Category
+          </span>
           <select
             name="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={fieldCls}
           >
             <option value="">—</option>
             {categories.map((c) => (
@@ -115,31 +130,35 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
               </option>
             ))}
           </select>
-        </div>
+        </label>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Notes</label>
-        <textarea
-          name="notes"
-          rows={2}
-          className="w-full px-3 py-2 border rounded-md bg-transparent"
-        />
-      </div>
+      <label className="block">
+        <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+          Notes
+        </span>
+        <textarea name="notes" rows={2} className={fieldCls} />
+      </label>
 
-      {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state?.error && (
+        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
+      )}
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex items-center gap-4 pt-2 border-t border-hairline">
         <button
           type="submit"
           disabled={pending}
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-4 py-2 rounded-md font-medium"
+          className="bg-foreground text-background px-5 py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center gap-2"
         >
-          {pending ? "Saving..." : "Save expense"}
+          {pending ? "Saving…" : (
+            <>
+              Save expense <span aria-hidden>→</span>
+            </>
+          )}
         </button>
         <Link
           href="/expenses"
-          className="px-4 py-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="text-sm hover:underline underline-offset-4"
         >
           Cancel
         </Link>

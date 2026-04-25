@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       db.invoice.findMany({
         where: { organizationId: organization.id },
         orderBy: { createdAt: "desc" },
-        take: 5,
+        take: 6,
         include: { client: true },
       }),
       db.expense.aggregate({
@@ -41,68 +41,74 @@ export default async function DashboardPage() {
     ]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">
-          Welcome back, {user.name ?? user.email}
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Here&apos;s a snapshot of your business.
+    <div className="space-y-16">
+      <header>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+          {new Date().toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+          })}
         </p>
-      </div>
+        <h1 className="serif text-5xl md:text-6xl leading-tight">
+          Hello, {user.name?.split(" ")[0] ?? "there"}.
+        </h1>
+      </header>
 
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="Total invoices" value={String(invoiceCount)} />
-        <Stat
-          label="Outstanding"
-          value={currency.format(outstandingAgg._sum.total ?? 0)}
-        />
-        <Stat
-          label="Paid (lifetime)"
-          value={currency.format(paidAgg._sum.total ?? 0)}
-        />
-        <Stat
-          label="Expenses (this month)"
-          value={currency.format(expensesMonthAgg._sum.amount ?? 0)}
-        />
+      <section className="border-y border-hairline">
+        <div className="grid grid-cols-2 lg:grid-cols-4">
+          <Stat label="Invoices" value={String(invoiceCount)} />
+          <Stat
+            label="Outstanding"
+            value={currency.format(outstandingAgg._sum.total ?? 0)}
+          />
+          <Stat
+            label="Paid"
+            value={currency.format(paidAgg._sum.total ?? 0)}
+          />
+          <Stat
+            label="Spent this month"
+            value={currency.format(expensesMonthAgg._sum.amount ?? 0)}
+          />
+        </div>
       </section>
 
-      <section className="bg-white dark:bg-gray-900 rounded-xl shadow">
-        <div className="px-6 py-4 border-b flex items-center justify-between">
-          <h2 className="font-semibold">Recent invoices</h2>
+      <section>
+        <div className="flex items-baseline justify-between mb-6">
+          <h2 className="serif text-3xl">Recent invoices</h2>
           <Link
             href="/invoices/new"
-            className="text-sm font-medium text-blue-600 hover:underline"
+            className="text-sm hover:underline underline-offset-4"
           >
             New invoice →
           </Link>
         </div>
+
         {recentInvoices.length === 0 ? (
-          <div className="px-6 py-12 text-center text-gray-500">
-            <p>No invoices yet.</p>
-            <Link
-              href="/invoices/new"
-              className="mt-3 inline-block text-blue-600 font-medium hover:underline"
-            >
-              Create your first invoice
-            </Link>
-          </div>
+          <Empty
+            label="Nothing invoiced yet"
+            cta="Create the first one"
+            href="/invoices/new"
+          />
         ) : (
-          <ul className="divide-y">
+          <ul className="border-t border-hairline">
             {recentInvoices.map((inv) => (
-              <li key={inv.id} className="px-6 py-3 flex items-center justify-between">
-                <div>
-                  <Link
-                    href={`/invoices/${inv.id}`}
-                    className="font-medium hover:underline"
-                  >
-                    {inv.number}
-                  </Link>
-                  <p className="text-xs text-gray-500">{inv.client.name}</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-medium">{currency.format(inv.total)}</p>
-                  <StatusBadge status={inv.status} />
+              <li
+                key={inv.id}
+                className="border-b border-hairline grid grid-cols-12 items-baseline py-4 gap-4"
+              >
+                <Link
+                  href={`/invoices/${inv.id}`}
+                  className="col-span-3 font-mono text-sm hover:underline underline-offset-4"
+                >
+                  {inv.number}
+                </Link>
+                <span className="col-span-5 text-sm">{inv.client.name}</span>
+                <span className="col-span-2 font-mono tabular text-sm text-right">
+                  {currency.format(inv.total)}
+                </span>
+                <div className="col-span-2 flex justify-end">
+                  <Status status={inv.status} />
                 </div>
               </li>
             ))}
@@ -115,26 +121,47 @@ export default async function DashboardPage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-5">
-      <p className="text-xs uppercase tracking-wide text-gray-500">{label}</p>
-      <p className="text-2xl font-semibold mt-1">{value}</p>
+    <div className="border-r last:border-r-0 border-hairline px-6 py-8">
+      <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+        {label}
+      </p>
+      <p className="serif text-4xl mt-3 tabular">{value}</p>
     </div>
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  const colors: Record<string, string> = {
-    draft: "bg-gray-100 text-gray-700",
-    sent: "bg-blue-100 text-blue-700",
-    paid: "bg-green-100 text-green-700",
-    overdue: "bg-red-100 text-red-700",
+function Empty({
+  label,
+  cta,
+  href,
+}: {
+  label: string;
+  cta: string;
+  href: string;
+}) {
+  return (
+    <div className="border border-dashed border-hairline px-6 py-16 text-center">
+      <p className="text-muted">{label}.</p>
+      <Link
+        href={href}
+        className="mt-4 inline-block hover:underline underline-offset-4"
+      >
+        {cta} →
+      </Link>
+    </div>
+  );
+}
+
+function Status({ status }: { status: string }) {
+  const tone: Record<string, string> = {
+    draft: "bg-neutral-400",
+    sent: "bg-amber-500",
+    paid: "bg-green-600",
+    overdue: "bg-red-600",
   };
   return (
-    <span
-      className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${
-        colors[status] ?? colors.draft
-      }`}
-    >
+    <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted">
+      <span className={`inline-block w-1.5 h-1.5 rounded-full ${tone[status] ?? "bg-neutral-400"}`} />
       {status}
     </span>
   );

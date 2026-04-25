@@ -3,22 +3,37 @@ import SignupForm from "./signup-form";
 
 export default function SignupPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 p-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow p-8 space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Create your account</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Start tracking invoices and expenses for your business.
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="border-b border-hairline">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <Link href="/" className="serif text-2xl">
+            Ledger
+          </Link>
+          <Link href="/login" className="text-sm hover:underline underline-offset-4">
+            Have an account? <span className="font-medium">Log in →</span>
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            New here
+          </p>
+          <h1 className="serif text-4xl leading-tight">
+            Set up your ledger.
+          </h1>
+          <p className="mt-3 text-muted">
+            One workspace, ready in about thirty seconds.
+          </p>
+          <div className="mt-10">
+            <SignupForm />
+          </div>
+          <p className="mt-8 text-xs text-muted">
+            By continuing you agree to behave reasonably. No fine print yet.
           </p>
         </div>
-        <SignupForm />
-        <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-          Already have an account?{" "}
-          <Link href="/login" className="font-medium text-blue-600 hover:underline">
-            Log in
-          </Link>
-        </p>
-      </div>
+      </main>
     </div>
   );
 }

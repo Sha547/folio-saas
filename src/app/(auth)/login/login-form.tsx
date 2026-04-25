@@ -10,43 +10,60 @@ export default function LoginForm() {
   );
 
   return (
-    <form action={formAction} className="space-y-4">
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-1">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          className="w-full px-3 py-2 border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium mb-1">
-          Password
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          className="w-full px-3 py-2 border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+    <form action={formAction} className="space-y-5">
+      <Field label="Email" name="email" type="email" autoComplete="email" required />
+      <Field
+        label="Password"
+        name="password"
+        type="password"
+        autoComplete="current-password"
+        required
+      />
+
       {state?.error && (
-        <p className="text-sm text-red-600">{state.error}</p>
+        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
       )}
+
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-2 rounded-md font-medium"
+        className="w-full bg-foreground text-background py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center justify-center gap-2"
       >
-        {pending ? "Logging in..." : "Log in"}
+        {pending ? "Signing in…" : (
+          <>
+            Sign in <span aria-hidden>→</span>
+          </>
+        )}
       </button>
     </form>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+  autoComplete,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  autoComplete?: string;
+}) {
+  return (
+    <label className="block">
+      <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+        {label}
+      </span>
+      <input
+        name={name}
+        type={type}
+        required={required}
+        autoComplete={autoComplete}
+        className="mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2"
+      />
+    </label>
   );
 }

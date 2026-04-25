@@ -13,30 +13,34 @@ export default async function NewInvoicePage() {
 
   if (clients.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow p-8 text-center">
-        <h1 className="text-xl font-semibold mb-2">No clients yet</h1>
-        <p className="text-sm text-gray-500 mb-4">
-          You need at least one client before you can create an invoice.
+      <div className="max-w-xl">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+          Hold on
+        </p>
+        <h1 className="serif text-5xl">You need a client first.</h1>
+        <p className="mt-3 text-muted">
+          Add someone you bill, then come back here.
         </p>
         <Link
           href="/clients/new"
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
+          className="mt-8 inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 hover:bg-neutral-800"
         >
-          Add a client
+          Add a client <span aria-hidden>→</span>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">New invoice</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Add line items and a due date — we&apos;ll calculate the totals.
-        </p>
-      </div>
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6">
+    <div className="max-w-3xl">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+        New
+      </p>
+      <h1 className="serif text-5xl">Compose an invoice.</h1>
+      <p className="mt-3 text-muted">
+        Add line items. We&apos;ll handle the totals.
+      </p>
+      <div className="mt-12">
         <NewInvoiceForm clients={clients} />
       </div>
     </div>

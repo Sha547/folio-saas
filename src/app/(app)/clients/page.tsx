@@ -12,78 +12,70 @@ export default async function ClientsPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-10">
+      <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Clients</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            People and businesses you invoice.
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            People you bill
           </p>
+          <h1 className="serif text-5xl">Clients</h1>
         </div>
         <Link
           href="/clients/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+          className="bg-foreground text-background px-4 py-2 hover:bg-neutral-800 inline-flex items-center gap-2"
         >
-          + New client
+          New client <span aria-hidden>→</span>
         </Link>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow overflow-hidden">
-        {clients.length === 0 ? (
-          <div className="px-6 py-12 text-center text-gray-500">
-            No clients yet. Add your first one to start invoicing.
+      {clients.length === 0 ? (
+        <div className="border border-dashed border-hairline px-6 py-20 text-center">
+          <p className="serif text-2xl">No one yet.</p>
+          <p className="text-muted mt-2">
+            Add your first client and you can invoice them.
+          </p>
+          <Link
+            href="/clients/new"
+            className="mt-6 inline-block hover:underline underline-offset-4"
+          >
+            Add a client →
+          </Link>
+        </div>
+      ) : (
+        <div className="border-t border-hairline">
+          <div className="grid grid-cols-12 py-3 border-b border-hairline font-mono text-[10px] uppercase tracking-widest text-muted">
+            <div className="col-span-5 px-2">Name</div>
+            <div className="col-span-4 px-2">Email</div>
+            <div className="col-span-2 px-2 text-right">Invoices</div>
+            <div className="col-span-1 px-2" />
           </div>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-800 text-left">
-              <tr>
-                <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Invoices</Th>
-                <Th aria-label="Actions" />
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {clients.map((c) => (
-                <tr key={c.id}>
-                  <Td className="font-medium">{c.name}</Td>
-                  <Td className="text-gray-500">{c.email ?? "—"}</Td>
-                  <Td>{c._count.invoices}</Td>
-                  <Td className="text-right">
-                    <form action={deleteClientAction}>
-                      <input type="hidden" name="id" value={c.id} />
-                      <button
-                        type="submit"
-                        className="text-xs text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </form>
-                  </Td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+          {clients.map((c) => (
+            <div
+              key={c.id}
+              className="grid grid-cols-12 items-baseline py-4 border-b border-hairline gap-2"
+            >
+              <div className="col-span-5 px-2">{c.name}</div>
+              <div className="col-span-4 px-2 text-muted text-sm">
+                {c.email ?? "—"}
+              </div>
+              <div className="col-span-2 px-2 text-right font-mono tabular">
+                {c._count.invoices}
+              </div>
+              <div className="col-span-1 px-2 text-right">
+                <form action={deleteClientAction}>
+                  <input type="hidden" name="id" value={c.id} />
+                  <button
+                    type="submit"
+                    className="font-mono text-[10px] uppercase tracking-widest text-muted hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
-}
-
-function Th({ children, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) {
-  return (
-    <th className="px-6 py-3 text-xs uppercase tracking-wide text-gray-500" {...props}>
-      {children}
-    </th>
-  );
-}
-
-function Td({
-  children,
-  className = "",
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return <td className={`px-6 py-3 ${className}`}>{children}</td>;
 }

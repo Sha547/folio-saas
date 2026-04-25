@@ -16,6 +16,9 @@ const currency = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
+const fieldCls =
+  "mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2";
+
 export default function NewInvoiceForm({
   clients,
 }: {
@@ -44,18 +47,20 @@ export default function NewInvoiceForm({
   };
 
   return (
-    <form action={formAction} className="space-y-6">
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Client *</label>
+    <form action={formAction} className="space-y-12">
+      <div className="grid sm:grid-cols-2 gap-8">
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Client *
+          </span>
           <select
             name="clientId"
             required
             defaultValue=""
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={fieldCls}
           >
             <option value="" disabled>
-              Select a client
+              Pick someone
             </option>
             {clients.map((c) => (
               <option key={c.id} value={c.id}>
@@ -63,39 +68,41 @@ export default function NewInvoiceForm({
               </option>
             ))}
           </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Due date *</label>
-          <input
-            type="date"
-            name="dueDate"
-            required
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
-          />
-        </div>
+        </label>
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Due date *
+          </span>
+          <input type="date" name="dueDate" required className={fieldCls} />
+        </label>
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-2">
-          <label className="block text-sm font-medium">Line items</label>
+        <div className="flex items-baseline justify-between mb-4">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Line items
+          </span>
           <button
             type="button"
             onClick={() => setItems((p) => [...p, { ...blankItem }])}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm hover:underline underline-offset-4"
           >
-            + Add item
+            + Add line
           </button>
         </div>
-        <div className="space-y-2">
+        <div className="border-t border-hairline">
           {items.map((it, i) => (
-            <div key={i} className="grid grid-cols-12 gap-2 items-start">
+            <div
+              key={i}
+              className="grid grid-cols-12 gap-3 py-3 border-b border-hairline items-baseline"
+            >
               <input
                 name="itemDescription"
                 placeholder="Description"
                 required
                 value={it.description}
                 onChange={(e) => updateItem(i, "description", e.target.value)}
-                className="col-span-6 px-3 py-2 border rounded-md bg-transparent"
+                className="col-span-6 px-0 py-1 bg-transparent border-b border-transparent focus:border-foreground focus:outline-none"
               />
               <input
                 name="itemQuantity"
@@ -105,23 +112,23 @@ export default function NewInvoiceForm({
                 placeholder="Qty"
                 value={it.quantity}
                 onChange={(e) => updateItem(i, "quantity", e.target.value)}
-                className="col-span-2 px-3 py-2 border rounded-md bg-transparent"
+                className="col-span-2 px-0 py-1 bg-transparent border-b border-transparent focus:border-foreground focus:outline-none font-mono tabular text-right"
               />
               <input
                 name="itemPrice"
                 type="number"
                 min="0"
                 step="0.01"
-                placeholder="Unit price"
+                placeholder="Unit"
                 value={it.unitPrice}
                 onChange={(e) => updateItem(i, "unitPrice", e.target.value)}
-                className="col-span-3 px-3 py-2 border rounded-md bg-transparent"
+                className="col-span-3 px-0 py-1 bg-transparent border-b border-transparent focus:border-foreground focus:outline-none font-mono tabular text-right"
               />
               <button
                 type="button"
                 disabled={items.length === 1}
                 onClick={() => setItems((p) => p.filter((_, idx) => idx !== i))}
-                className="col-span-1 text-gray-500 hover:text-red-600 disabled:opacity-30 px-2 py-2"
+                className="col-span-1 text-muted hover:text-red-700 disabled:opacity-20 text-right"
                 aria-label="Remove item"
               >
                 ×
@@ -131,9 +138,11 @@ export default function NewInvoiceForm({
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Tax rate (%)</label>
+      <div className="grid sm:grid-cols-2 gap-8">
+        <label className="block">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Tax rate (%)
+          </span>
           <input
             type="number"
             name="taxRate"
@@ -142,40 +151,54 @@ export default function NewInvoiceForm({
             step="0.01"
             value={taxRate}
             onChange={(e) => setTaxRate(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md bg-transparent"
+            className={`${fieldCls} font-mono tabular`}
+          />
+        </label>
+      </div>
+
+      <label className="block">
+        <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
+          Notes
+        </span>
+        <textarea
+          name="notes"
+          rows={2}
+          placeholder="Payment terms, thank-you note…"
+          className={fieldCls}
+        />
+      </label>
+
+      <div className="ml-auto max-w-xs space-y-2 font-mono tabular text-sm">
+        <Row label="Subtotal" value={currency.format(totals.subtotal)} />
+        <Row label={`Tax (${taxRate}%)`} value={currency.format(totals.tax)} />
+        <div className="border-t border-foreground pt-2 mt-2">
+          <Row
+            label="Total"
+            value={currency.format(totals.total)}
+            bold
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Notes</label>
-        <textarea
-          name="notes"
-          rows={3}
-          placeholder="Payment terms, thank-you note, etc."
-          className="w-full px-3 py-2 border rounded-md bg-transparent"
-        />
-      </div>
+      {state?.error && (
+        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
+      )}
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-md p-4 space-y-1 text-sm">
-        <Row label="Subtotal" value={currency.format(totals.subtotal)} />
-        <Row label={`Tax (${taxRate}%)`} value={currency.format(totals.tax)} />
-        <Row label="Total" value={currency.format(totals.total)} bold />
-      </div>
-
-      {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
-
-      <div className="flex gap-3">
+      <div className="flex items-center gap-4 pt-2 border-t border-hairline">
         <button
           type="submit"
           disabled={pending}
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-4 py-2 rounded-md font-medium"
+          className="bg-foreground text-background px-5 py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center gap-2"
         >
-          {pending ? "Creating..." : "Create invoice"}
+          {pending ? "Creating…" : (
+            <>
+              Create invoice <span aria-hidden>→</span>
+            </>
+          )}
         </button>
         <Link
           href="/invoices"
-          className="px-4 py-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="text-sm hover:underline underline-offset-4"
         >
           Cancel
         </Link>
@@ -186,7 +209,7 @@ export default function NewInvoiceForm({
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className={`flex justify-between ${bold ? "font-semibold text-base pt-1 border-t" : ""}`}>
+    <div className={`flex justify-between ${bold ? "text-base" : "text-muted"}`}>
       <span>{label}</span>
       <span>{value}</span>
     </div>

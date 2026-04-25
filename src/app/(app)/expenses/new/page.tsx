@@ -6,16 +6,17 @@ export default async function NewExpensePage() {
   const aiEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
 
   return (
-    <div className="max-w-xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">New expense</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          {aiEnabled
-            ? "Upload a receipt and we'll fill in the details automatically."
-            : "Record a business expense. (Set ANTHROPIC_API_KEY in .env to enable AI receipt parsing.)"}
-        </p>
-      </div>
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6">
+    <div className="max-w-xl">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+        New
+      </p>
+      <h1 className="serif text-5xl">Log an expense.</h1>
+      <p className="mt-3 text-muted">
+        {aiEnabled
+          ? "Drop in a receipt — Claude reads it. Or just type the details."
+          : "Type it out. Add ANTHROPIC_API_KEY to .env to read receipts with AI."}
+      </p>
+      <div className="mt-12">
         <NewExpenseForm aiEnabled={aiEnabled} />
       </div>
     </div>

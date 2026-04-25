@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafaf7;
+  --foreground: #0a0a0a;
+  --muted: #6b6b6b;
+  --hairline: #e5e5e0;
+  --border: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-instrument-serif);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv01";
+}
+
+/* Numbers always tabular when used in tables / money */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Distinctive serif display class */
+.serif {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+}
+
+/* Underline-on-hover link, no color shift */
+a.linky,
+.linky a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a.linky:hover,
+.linky a:hover {
+  text-decoration: underline;
+}
+
+/* A subtle one-pixel grid for hero sections, no AI "purple gradient" vibes */
+.gridlines {
+  background-image:
+    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
 }
