@@ -134,6 +134,14 @@ export default async function InvoicePage({
         >
           ← All invoices
         </Link>
+        <a
+          href={`/api/invoices/${invoice.id}/pdf`}
+          target="_blank"
+          rel="noopener"
+          className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          Download PDF
+        </a>
         <form action={deleteInvoiceAction} className="ml-auto">
           <input type="hidden" name="id" value={invoice.id} />
           <button
