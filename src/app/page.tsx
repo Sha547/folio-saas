@@ -7,29 +7,32 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-hairline">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="serif text-2xl">Ledger</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-              v0.1
-            </span>
-          </div>
-          <nav className="flex items-center gap-6 text-sm">
+      <header className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border/40">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="font-semibold text-lg tracking-tight">
+            Ledger
+          </Link>
+          <nav className="flex items-center gap-2 text-sm">
             {isAuthed ? (
-              <Link href="/dashboard" className="bg-foreground text-background px-4 py-2 hover:bg-neutral-800">
-                Open dashboard →
+              <Link
+                href="/dashboard"
+                className="bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2 rounded-full font-medium transition"
+              >
+                Dashboard
               </Link>
             ) : (
               <>
-                <Link href="/login" className="hover:underline underline-offset-4">
+                <Link
+                  href="/login"
+                  className="text-foreground/80 hover:text-foreground px-4 py-2 rounded-full hover:bg-foreground/5 transition"
+                >
                   Log in
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-foreground text-background px-4 py-2 hover:bg-neutral-800"
+                  className="bg-foreground hover:bg-foreground/90 text-background px-5 py-2 rounded-full font-medium transition"
                 >
-                  Start →
+                  Get started
                 </Link>
               </>
             )}
@@ -37,118 +40,150 @@ export default async function Home() {
         </div>
       </header>
 
-      <main>
-        <section className="border-b border-hairline relative overflow-hidden">
-          <div className="absolute inset-0 gridlines opacity-50 pointer-events-none" />
-          <div className="max-w-6xl mx-auto px-6 py-20 md:py-32 relative">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">
-              For freelancers, by a freelancer
-            </p>
-            <h1 className="serif text-5xl md:text-7xl lg:text-8xl leading-[0.95] max-w-4xl">
-              The paperwork you{" "}
-              <em className="text-muted">keep avoiding</em>,
-              <br />
-              done in a Tuesday afternoon.
-            </h1>
-            <p className="mt-10 max-w-xl text-lg text-muted leading-relaxed">
-              Send invoices that look like they were designed by a human. Snap a
-              receipt — Claude reads it for you. Stop pretending QuickBooks is
-              going to feel any better next month.
-            </p>
-            <div className="mt-12 flex items-center gap-4">
-              <Link
-                href={isAuthed ? "/dashboard" : "/signup"}
-                className="bg-foreground text-background px-6 py-3 hover:bg-neutral-800 inline-flex items-center gap-2"
-              >
-                {isAuthed ? "Open dashboard" : "Sign up — it's free"}
-                <span aria-hidden>→</span>
-              </Link>
-              <Link
-                href="#features"
-                className="text-sm hover:underline underline-offset-4"
-              >
-                See what's inside
-              </Link>
-            </div>
+      <main className="max-w-6xl mx-auto px-6 py-20">
+        {/* Hero */}
+        <section className="text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-foreground/5 text-xs font-medium mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            Now with AI receipt scanning
+          </div>
+          <h1 className="text-5xl sm:text-7xl font-bold tracking-[-0.04em] leading-[1.05]">
+            Invoices and expenses,
+            <br />
+            <span className="text-muted">made beautifully simple.</span>
+          </h1>
+          <p className="mt-8 text-lg text-muted max-w-xl mx-auto leading-relaxed">
+            Send professional invoices in seconds. Snap a photo of any receipt
+            and AI fills in the details automatically.
+          </p>
+          <div className="mt-10 flex items-center gap-3 justify-center">
+            <Link
+              href={isAuthed ? "/dashboard" : "/signup"}
+              className="bg-accent hover:bg-[var(--accent-hover)] text-white px-8 py-3.5 rounded-full font-medium transition shadow-lg shadow-accent/20"
+            >
+              {isAuthed ? "Open dashboard" : "Start free →"}
+            </Link>
+            <Link
+              href="#features"
+              className="text-foreground/80 hover:text-foreground px-6 py-3.5 rounded-full hover:bg-foreground/5 font-medium transition"
+            >
+              See features
+            </Link>
           </div>
         </section>
 
-        <section
-          id="features"
-          className="border-b border-hairline"
-        >
-          <div className="max-w-6xl mx-auto px-6 py-20">
-            <div className="grid md:grid-cols-12 gap-12 mb-16">
-              <p className="md:col-span-3 font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                Three things, done well
-              </p>
-              <h2 className="md:col-span-9 serif text-4xl md:text-5xl leading-tight">
-                Not 200 features.
+        {/* Bento grid */}
+        <section id="features" className="mt-24 bento auto-rows-[180px]">
+          {/* Big card — invoices */}
+          <div className="col-span-12 md:col-span-7 row-span-2 card p-8 gradient-surface flex flex-col justify-between overflow-hidden relative">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-medium text-accent mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                Invoicing
+              </div>
+              <h3 className="text-3xl font-semibold tracking-tight">
+                Send invoices that
                 <br />
-                The ones you&apos;ll actually use.
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-hairline border-y border-hairline">
-              <Feature
-                kicker="01"
-                title="Invoices"
-                description="Add a client, list what you did, send a PDF. Pay attention to typography because your clients do too."
-              />
-              <Feature
-                kicker="02"
-                title="AI receipts"
-                description="Photograph a coffee receipt. Vendor, amount, date — extracted by Claude. Your shoebox of receipts can finally retire."
-              />
-              <Feature
-                kicker="03"
-                title="Workspaces"
-                description="Each business gets its own clean ledger. Invite a partner if you have one. Otherwise, enjoy the quiet."
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-hairline">
-          <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-12 gap-8 items-end">
-            <div className="md:col-span-7">
-              <h2 className="serif text-4xl md:text-5xl leading-tight">
-                You probably already have an invoicing tool.
-                <br />
-                <em className="text-muted">It probably annoys you.</em>
-              </h2>
-              <p className="mt-6 text-muted max-w-xl">
-                Ledger is built for one kind of person: someone who&apos;d rather
-                spend an evening reading than configuring tax categories. The
-                interface stays out of the way. The AI does the boring parts. You
-                send the invoice.
+                actually look professional.
+              </h3>
+              <p className="mt-3 text-muted max-w-md">
+                Auto-numbered. Tax-aware. PDF in one click. Status moves from
+                draft → sent → paid as you work.
               </p>
             </div>
-            <div className="md:col-span-5">
-              <Link
-                href={isAuthed ? "/dashboard" : "/signup"}
-                className="block bg-foreground text-background px-6 py-5 hover:bg-neutral-800 group"
-              >
-                <span className="font-mono text-[10px] uppercase tracking-widest opacity-60">
-                  Free, no card
-                </span>
-                <div className="serif text-2xl mt-1 flex items-center justify-between">
-                  {isAuthed ? "Open your dashboard" : "Create your workspace"}
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    →
-                  </span>
-                </div>
-              </Link>
+            <div className="flex items-end justify-between gap-6">
+              <div className="space-y-2 text-sm">
+                <Row label="Subtotal" value="$1,000.00" />
+                <Row label="Tax (10%)" value="$100.00" />
+                <Row label="Total" value="$1,100.00" bold />
+              </div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                Paid
+              </span>
             </div>
+          </div>
+
+          {/* AI receipts — gradient card */}
+          <div className="col-span-12 md:col-span-5 row-span-2 card p-8 gradient-violet text-white flex flex-col justify-between overflow-hidden">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-medium text-white/80 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                AI Receipts
+              </div>
+              <h3 className="text-3xl font-semibold tracking-tight">
+                Snap. Done.
+              </h3>
+              <p className="mt-3 text-white/80 max-w-sm">
+                Upload a receipt photo. Claude reads the vendor, amount, date,
+                and category. You confirm. Move on with your day.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 text-sm">
+              <span className="px-3 py-1 rounded-full bg-white/15 backdrop-blur">
+                📸 Photo
+              </span>
+              <span>→</span>
+              <span className="px-3 py-1 rounded-full bg-white/15 backdrop-blur font-mono text-xs">
+                {`{ vendor, amount }`}
+              </span>
+            </div>
+          </div>
+
+          {/* Workspaces */}
+          <div className="col-span-12 md:col-span-4 card p-6">
+            <div className="text-3xl mb-2">👥</div>
+            <h3 className="font-semibold text-lg tracking-tight">
+              Multiple workspaces
+            </h3>
+            <p className="text-sm text-muted mt-1">
+              One business or many. Each gets its own clean ledger.
+            </p>
+          </div>
+
+          {/* PDF */}
+          <div className="col-span-12 md:col-span-4 card p-6">
+            <div className="text-3xl mb-2">📄</div>
+            <h3 className="font-semibold text-lg tracking-tight">
+              PDF in one click
+            </h3>
+            <p className="text-sm text-muted mt-1">
+              Branded, tidy, ready to email. No manual formatting.
+            </p>
+          </div>
+
+          {/* Free */}
+          <div className="col-span-12 md:col-span-4 card p-6 gradient-emerald text-white">
+            <div className="text-3xl mb-2">✦</div>
+            <h3 className="font-semibold text-lg tracking-tight">
+              Free to start
+            </h3>
+            <p className="text-sm text-white/80 mt-1">
+              No credit card. Sign up in 30 seconds.
+            </p>
           </div>
         </section>
 
-        <footer className="max-w-6xl mx-auto px-6 py-10 flex items-center justify-between text-xs font-mono text-muted">
-          <div>
-            © {new Date().getFullYear()} Ledger
-          </div>
-          <div>
-            Built with Next.js · Prisma · Claude
+        {/* CTA */}
+        <section className="mt-24 card p-12 text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-[-0.03em]">
+            Ready when you are.
+          </h2>
+          <p className="mt-4 text-muted max-w-md mx-auto">
+            Stop hand-formatting Word docs. Send your first invoice in minutes.
+          </p>
+          <Link
+            href={isAuthed ? "/dashboard" : "/signup"}
+            className="mt-8 inline-block bg-accent hover:bg-[var(--accent-hover)] text-white px-8 py-3.5 rounded-full font-medium transition shadow-lg shadow-accent/20"
+          >
+            {isAuthed ? "Open dashboard" : "Create your workspace →"}
+          </Link>
+        </section>
+
+        <footer className="mt-20 py-8 flex items-center justify-between text-sm text-muted">
+          <div>© {new Date().getFullYear()} Ledger</div>
+          <div className="font-mono text-xs">
+            Next.js · Prisma · Claude
           </div>
         </footer>
       </main>
@@ -156,20 +191,11 @@ export default async function Home() {
   );
 }
 
-function Feature({
-  kicker,
-  title,
-  description,
-}: {
-  kicker: string;
-  title: string;
-  description: string;
-}) {
+function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className="p-8">
-      <p className="font-mono text-xs text-muted">{kicker}</p>
-      <h3 className="serif text-3xl mt-4">{title}</h3>
-      <p className="mt-4 text-sm leading-relaxed text-muted">{description}</p>
+    <div className={`flex justify-between gap-8 ${bold ? "font-semibold border-t border-border/60 pt-2" : "text-muted"}`}>
+      <span>{label}</span>
+      <span className="font-mono tabular">{value}</span>
     </div>
   );
 }

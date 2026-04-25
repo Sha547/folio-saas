@@ -9,8 +9,8 @@ import {
 
 const categories = ["Food", "Travel", "Office", "Software", "Marketing", "Other"];
 
-const fieldCls =
-  "mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2";
+const inputCls =
+  "w-full px-4 py-2.5 bg-background border border-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition";
 
 export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
   const [state, formAction, pending] = useActionState<ExpenseActionState, FormData>(
@@ -52,76 +52,66 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
   }
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form action={formAction} className="space-y-5">
       <div>
-        <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-          Receipt {aiEnabled && <em className="not-italic text-foreground">(AI will fill the rest)</em>}
+        <span className="text-sm font-medium flex items-center gap-2">
+          Receipt
+          {aiEnabled && (
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold gradient-violet text-white">
+              AI
+            </span>
+          )}
         </span>
         <input
           type="file"
           name="receipt"
           accept="image/*,application/pdf"
           onChange={handleReceiptChange}
-          className="mt-3 block w-full text-sm file:mr-3 file:px-3 file:py-1.5 file:border file:border-foreground file:bg-transparent file:text-foreground file:hover:bg-foreground file:hover:text-background"
+          className="mt-2 block w-full text-sm file:mr-3 file:px-4 file:py-2 file:rounded-full file:border-0 file:bg-accent/10 file:text-accent hover:file:bg-accent/20 file:font-medium file:cursor-pointer cursor-pointer"
         />
         {parsing && (
-          <p className="text-xs font-mono mt-2">— Reading receipt…</p>
+          <p className="mt-2 text-sm text-accent flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+            Reading receipt with AI…
+          </p>
         )}
         {parseError && (
-          <p className="text-xs font-mono text-red-700 mt-2">— {parseError}</p>
+          <p className="mt-2 text-sm text-red-600">{parseError}</p>
         )}
       </div>
 
-      <div className="border-t border-hairline pt-8 grid sm:grid-cols-2 gap-8">
+      <div className="grid sm:grid-cols-2 gap-4">
+        <Field
+          label="Vendor"
+          name="vendor"
+          required
+          value={vendor}
+          onChange={setVendor}
+        />
+        <Field
+          label="Amount"
+          name="amount"
+          type="number"
+          required
+          value={amount}
+          onChange={setAmount}
+          mono
+        />
+        <Field
+          label="Date"
+          name="date"
+          type="date"
+          required
+          value={date}
+          onChange={setDate}
+        />
         <label className="block">
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            Vendor *
-          </span>
-          <input
-            name="vendor"
-            required
-            value={vendor}
-            onChange={(e) => setVendor(e.target.value)}
-            className={fieldCls}
-          />
-        </label>
-        <label className="block">
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            Amount *
-          </span>
-          <input
-            type="number"
-            name="amount"
-            step="0.01"
-            min="0"
-            required
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className={`${fieldCls} font-mono tabular`}
-          />
-        </label>
-        <label className="block">
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            Date *
-          </span>
-          <input
-            type="date"
-            name="date"
-            required
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className={fieldCls}
-          />
-        </label>
-        <label className="block">
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            Category
-          </span>
+          <span className="text-sm font-medium">Category</span>
           <select
             name="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className={fieldCls}
+            className={`${inputCls} mt-1.5`}
           >
             <option value="">—</option>
             {categories.map((c) => (
@@ -134,35 +124,68 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
       </div>
 
       <label className="block">
-        <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-          Notes
-        </span>
-        <textarea name="notes" rows={2} className={fieldCls} />
+        <span className="text-sm font-medium">Notes</span>
+        <textarea name="notes" rows={2} className={`${inputCls} mt-1.5`} />
       </label>
 
       {state?.error && (
-        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
+        <p className="text-sm text-red-600 px-3 py-2 rounded-lg bg-red-50">
+          {state.error}
+        </p>
       )}
 
-      <div className="flex items-center gap-4 pt-2 border-t border-hairline">
+      <div className="flex items-center gap-3 pt-2">
         <button
           type="submit"
           disabled={pending}
-          className="bg-foreground text-background px-5 py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center gap-2"
+          className="bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-xl font-medium disabled:opacity-50 transition"
         >
-          {pending ? "Saving…" : (
-            <>
-              Save expense <span aria-hidden>→</span>
-            </>
-          )}
+          {pending ? "Saving…" : "Save expense"}
         </button>
         <Link
           href="/expenses"
-          className="text-sm hover:underline underline-offset-4"
+          className="text-sm text-muted hover:text-foreground px-4 py-2 rounded-full hover:bg-foreground/5 transition"
         >
           Cancel
         </Link>
       </div>
     </form>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+  value,
+  onChange,
+  mono,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
+  mono?: boolean;
+}) {
+  return (
+    <label className="block">
+      <span className="text-sm font-medium">
+        {label}
+        {required && <span className="text-accent"> *</span>}
+      </span>
+      <input
+        name={name}
+        type={type}
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        step={type === "number" ? "0.01" : undefined}
+        min={type === "number" ? "0" : undefined}
+        className={`${inputCls} mt-1.5 ${mono ? "font-mono tabular" : ""}`}
+      />
+    </label>
   );
 }

@@ -11,36 +11,42 @@ export default async function AppLayout({
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-hairline bg-background sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-8">
-          <Link href="/dashboard" className="flex items-baseline gap-2">
-            <span className="serif text-xl">Ledger</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted hidden sm:inline">
-              / {organization.slug}
+      <header className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border/40">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center gap-8">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg gradient-blue flex items-center justify-center text-white text-sm font-bold">
+              L
+            </div>
+            <span className="font-semibold tracking-tight hidden sm:inline">
+              Ledger
             </span>
           </Link>
-          <nav className="flex gap-6 text-sm">
+
+          <nav className="flex items-center gap-1 text-sm">
             <NavLink href="/dashboard">Overview</NavLink>
             <NavLink href="/clients">Clients</NavLink>
             <NavLink href="/invoices">Invoices</NavLink>
             <NavLink href="/expenses">Expenses</NavLink>
           </nav>
-          <div className="ml-auto flex items-center gap-4 text-sm">
-            <span className="font-mono text-xs text-muted hidden sm:inline">
-              {user.email}
-            </span>
+
+          <div className="ml-auto flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground/5 text-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="font-medium">{organization.name}</span>
+            </div>
             <form action={signOutAction}>
               <button
                 type="submit"
-                className="text-xs hover:underline underline-offset-4"
+                className="w-8 h-8 rounded-full bg-foreground/5 hover:bg-foreground/10 transition flex items-center justify-center text-xs font-semibold"
+                title={`Sign out (${user.email})`}
               >
-                Sign out
+                {(user.name?.[0] ?? user.email?.[0] ?? "?").toUpperCase()}
               </button>
             </form>
           </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-12 w-full flex-1">{children}</main>
+      <main className="max-w-6xl mx-auto px-6 py-10 w-full flex-1">{children}</main>
     </div>
   );
 }
@@ -49,7 +55,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="text-foreground/70 hover:text-foreground hover:underline underline-offset-[6px] decoration-1"
+      className="px-3 py-1.5 rounded-full text-foreground/70 hover:text-foreground hover:bg-foreground/5 transition"
     >
       {children}
     </Link>

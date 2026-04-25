@@ -3,6 +3,9 @@
 import { useActionState } from "react";
 import { loginAction, type ActionState } from "@/lib/actions/auth";
 
+const inputCls =
+  "w-full px-4 py-2.5 bg-background border border-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition";
+
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     loginAction,
@@ -10,7 +13,7 @@ export default function LoginForm() {
   );
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} className="space-y-4">
       <Field label="Email" name="email" type="email" autoComplete="email" required />
       <Field
         label="Password"
@@ -21,19 +24,17 @@ export default function LoginForm() {
       />
 
       {state?.error && (
-        <p className="text-sm text-red-700 font-mono">— {state.error}</p>
+        <p className="text-sm text-red-600 px-3 py-2 rounded-lg bg-red-50">
+          {state.error}
+        </p>
       )}
 
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-foreground text-background py-3 hover:bg-neutral-800 disabled:opacity-40 inline-flex items-center justify-center gap-2"
+        className="w-full bg-accent hover:bg-[var(--accent-hover)] text-white py-3 rounded-xl font-medium disabled:opacity-50 transition mt-2"
       >
-        {pending ? "Signing in…" : (
-          <>
-            Sign in <span aria-hidden>→</span>
-          </>
-        )}
+        {pending ? "Signing in…" : "Sign in"}
       </button>
     </form>
   );
@@ -54,15 +55,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-        {label}
-      </span>
+      <span className="text-sm font-medium">{label}</span>
       <input
         name={name}
         type={type}
         required={required}
         autoComplete={autoComplete}
-        className="mt-2 w-full px-0 py-2 bg-transparent border-b border-foreground focus:outline-none focus:border-b-2"
+        className={`${inputCls} mt-1.5`}
       />
     </label>
   );

@@ -1,19 +1,25 @@
+import Link from "next/link";
 import { requireWorkspace } from "@/lib/session";
 import NewClientForm from "./new-client-form";
 
 export default async function NewClientPage() {
   await requireWorkspace();
   return (
-    <div className="max-w-xl">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-        New
-      </p>
-      <h1 className="serif text-5xl">Add a client.</h1>
-      <p className="mt-3 text-muted">
-        Just a name is enough. You can add the rest later.
-      </p>
-      <div className="mt-12">
-        <NewClientForm />
+    <div className="max-w-xl mx-auto">
+      <Link
+        href="/clients"
+        className="text-sm text-muted hover:text-foreground inline-flex items-center gap-1 mb-4"
+      >
+        ← Clients
+      </Link>
+      <div className="card p-8">
+        <h1 className="text-2xl font-bold tracking-tight">New client</h1>
+        <p className="text-muted mt-1 text-sm">
+          A name is enough. You can add the rest later.
+        </p>
+        <div className="mt-8">
+          <NewClientForm />
+        </div>
       </div>
     </div>
   );

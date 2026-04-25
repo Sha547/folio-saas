@@ -27,97 +27,103 @@ export default async function InvoicePage({
   if (!invoice) notFound();
 
   return (
-    <div className="max-w-3xl space-y-12">
-      <div>
-        <Link
-          href="/invoices"
-          className="font-mono text-xs uppercase tracking-widest text-muted hover:underline underline-offset-4"
-        >
-          ← All invoices
-        </Link>
-        <div className="flex items-end justify-between mt-4">
+    <div className="max-w-3xl mx-auto space-y-6">
+      <Link
+        href="/invoices"
+        className="text-sm text-muted hover:text-foreground inline-flex items-center gap-1"
+      >
+        ← Invoices
+      </Link>
+
+      {/* Hero card */}
+      <div className="card p-8 gradient-surface">
+        <div className="flex items-start justify-between">
           <div>
             <p className="font-mono text-sm text-muted">{invoice.number}</p>
-            <h1 className="serif text-5xl mt-2">
+            <p className="text-5xl font-bold tracking-tight mt-2 tabular">
               {currency.format(invoice.total)}
-            </h1>
-            <p className="mt-3 font-mono text-xs uppercase tracking-widest text-muted">
+            </p>
+            <p className="mt-3 text-sm text-muted">
               Due {invoice.dueDate.toLocaleDateString()}
             </p>
           </div>
-          <Status status={invoice.status} large />
+          <StatusPill status={invoice.status} large />
         </div>
       </div>
 
-      <section className="border-y border-hairline grid grid-cols-1 sm:grid-cols-2">
-        <div className="border-r border-hairline px-6 py-8">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+      {/* Bill to + From */}
+      <div className="bento auto-rows-min">
+        <div className="col-span-12 sm:col-span-6 card p-6">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider">
             Bill to
           </p>
-          <p className="serif text-2xl mt-3">{invoice.client.name}</p>
+          <p className="font-semibold tracking-tight mt-3">
+            {invoice.client.name}
+          </p>
           {invoice.client.email && (
             <p className="text-sm text-muted mt-1">{invoice.client.email}</p>
           )}
           {invoice.client.address && (
-            <p className="text-sm text-muted mt-1 whitespace-pre-line">
+            <p className="text-sm text-muted mt-1 whitespace-pre-line break-words">
               {invoice.client.address}
             </p>
           )}
         </div>
-        <div className="px-6 py-8">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+        <div className="col-span-12 sm:col-span-6 card p-6">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider">
             From
           </p>
-          <p className="serif text-2xl mt-3">{organization.name}</p>
-          <p className="text-sm text-muted mt-1 font-mono">
+          <p className="font-semibold tracking-tight mt-3">
+            {organization.name}
+          </p>
+          <p className="text-sm text-muted mt-1">
             Issued {invoice.issueDate.toLocaleDateString()}
           </p>
         </div>
-      </section>
+      </div>
 
-      <section>
-        <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted mb-4">
-          Line items
-        </h2>
-        <div className="border-t border-hairline">
-          {invoice.items.map((it) => (
-            <div
-              key={it.id}
-              className="grid grid-cols-12 py-4 border-b border-hairline items-baseline gap-2"
-            >
-              <div className="col-span-7">{it.description}</div>
-              <div className="col-span-2 font-mono tabular text-sm text-muted text-right">
-                {it.quantity} × {currency.format(it.unitPrice)}
-              </div>
-              <div className="col-span-3 font-mono tabular text-right">
-                {currency.format(it.amount)}
-              </div>
-            </div>
-          ))}
+      {/* Line items */}
+      <div className="card overflow-hidden">
+        <div className="px-6 py-4 border-b border-border/40">
+          <h2 className="font-semibold tracking-tight">Line items</h2>
         </div>
-
-        <div className="ml-auto max-w-xs mt-6 space-y-2 font-mono tabular text-sm">
+        <ul className="divide-y divide-border/40">
+          {invoice.items.map((it) => (
+            <li
+              key={it.id}
+              className="px-6 py-3 grid grid-cols-12 items-center gap-4"
+            >
+              <span className="col-span-7 text-sm">{it.description}</span>
+              <span className="col-span-2 text-xs text-muted font-mono tabular text-right">
+                {it.quantity} × {currency.format(it.unitPrice)}
+              </span>
+              <span className="col-span-3 text-sm font-mono tabular text-right">
+                {currency.format(it.amount)}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="px-6 py-4 bg-foreground/[0.02] border-t border-border/40 space-y-1.5">
           <Row label="Subtotal" value={currency.format(invoice.subtotal)} />
           <Row
             label={`Tax (${invoice.taxRate}%)`}
             value={currency.format(invoice.total - invoice.subtotal)}
           />
-          <div className="border-t border-foreground pt-2 mt-2">
-            <Row label="Total" value={currency.format(invoice.total)} bold />
-          </div>
+          <Row label="Total" value={currency.format(invoice.total)} bold />
         </div>
-      </section>
+      </div>
 
       {invoice.notes && (
-        <section className="border-t border-hairline pt-6">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted mb-3">
+        <div className="card p-6">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-2">
             Notes
           </p>
-          <p className="whitespace-pre-line text-muted">{invoice.notes}</p>
-        </section>
+          <p className="text-sm whitespace-pre-line">{invoice.notes}</p>
+        </div>
       )}
 
-      <section className="border-t border-hairline pt-6 flex flex-wrap gap-3 items-center">
+      {/* Actions */}
+      <div className="card p-4 flex flex-wrap items-center gap-2">
         <StatusButton id={invoice.id} status="sent" current={invoice.status}>
           Mark as sent
         </StatusButton>
@@ -131,7 +137,7 @@ export default async function InvoicePage({
           href={`/api/invoices/${invoice.id}/pdf`}
           target="_blank"
           rel="noopener"
-          className="border border-foreground px-3 py-1.5 text-sm hover:bg-foreground hover:text-background"
+          className="bg-accent hover:bg-[var(--accent-hover)] text-white px-4 py-2 rounded-full text-sm font-medium transition"
         >
           Download PDF
         </a>
@@ -139,21 +145,25 @@ export default async function InvoicePage({
           <input type="hidden" name="id" value={invoice.id} />
           <button
             type="submit"
-            className="font-mono text-[10px] uppercase tracking-widest text-muted hover:text-red-700"
+            className="text-xs text-red-600 hover:underline underline-offset-4 px-3"
           >
             Delete
           </button>
         </form>
-      </section>
+      </div>
     </div>
   );
 }
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className={`flex justify-between ${bold ? "text-base" : "text-muted"}`}>
+    <div
+      className={`flex justify-between text-sm ${
+        bold ? "font-semibold text-base pt-2 border-t border-border/40" : "text-muted"
+      }`}
+    >
       <span>{label}</span>
-      <span>{value}</span>
+      <span className="font-mono tabular">{value}</span>
     </div>
   );
 }
@@ -176,7 +186,7 @@ function StatusButton({
       <input type="hidden" name="status" value={status} />
       <button
         type="submit"
-        className="border border-foreground px-3 py-1.5 text-sm hover:bg-foreground hover:text-background"
+        className="bg-foreground/5 hover:bg-foreground/10 px-4 py-2 rounded-full text-sm font-medium transition"
       >
         {children}
       </button>
@@ -184,22 +194,28 @@ function StatusButton({
   );
 }
 
-function Status({ status, large }: { status: string; large?: boolean }) {
-  const tone: Record<string, string> = {
-    draft: "bg-neutral-400",
+function StatusPill({ status, large }: { status: string; large?: boolean }) {
+  const styles: Record<string, string> = {
+    draft: "bg-neutral-100 text-neutral-700",
+    sent: "bg-amber-100 text-amber-700",
+    paid: "bg-emerald-100 text-emerald-700",
+    overdue: "bg-red-100 text-red-700",
+  };
+  const dots: Record<string, string> = {
+    draft: "bg-neutral-500",
     sent: "bg-amber-500",
-    paid: "bg-green-600",
+    paid: "bg-emerald-600",
     overdue: "bg-red-600",
   };
   return (
     <span
-      className={`inline-flex items-center gap-2 font-mono uppercase tracking-widest text-muted ${
-        large ? "text-xs" : "text-[10px]"
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-full font-medium capitalize ${
+        styles[status] ?? styles.draft
+      } ${large ? "px-4 py-1.5 text-sm" : "px-2.5 py-1 text-xs"}`}
     >
       <span
-        className={`inline-block ${large ? "w-2 h-2" : "w-1.5 h-1.5"} rounded-full ${
-          tone[status] ?? "bg-neutral-400"
+        className={`rounded-full ${dots[status] ?? dots.draft} ${
+          large ? "w-2 h-2" : "w-1.5 h-1.5"
         }`}
       />
       {status}

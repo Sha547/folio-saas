@@ -12,61 +12,60 @@ export default async function ClientsPage() {
   });
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       <div className="flex items-end justify-between">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-            People you bill
+          <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
+          <p className="text-muted mt-1">
+            People and businesses you invoice.
           </p>
-          <h1 className="serif text-5xl">Clients</h1>
         </div>
         <Link
           href="/clients/new"
-          className="bg-foreground text-background px-4 py-2 hover:bg-neutral-800 inline-flex items-center gap-2"
+          className="bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-full font-medium transition shadow-md shadow-accent/20"
         >
-          New client <span aria-hidden>→</span>
+          + New client
         </Link>
       </div>
 
       {clients.length === 0 ? (
-        <div className="border border-dashed border-hairline px-6 py-20 text-center">
-          <p className="serif text-2xl">No one yet.</p>
-          <p className="text-muted mt-2">
-            Add your first client and you can invoice them.
+        <div className="card p-16 text-center">
+          <div className="text-4xl mb-3">👋</div>
+          <h2 className="text-xl font-semibold tracking-tight">
+            No clients yet
+          </h2>
+          <p className="text-muted mt-1">
+            Add your first one to start invoicing.
           </p>
           <Link
             href="/clients/new"
-            className="mt-6 inline-block hover:underline underline-offset-4"
+            className="mt-6 inline-block bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-full font-medium transition"
           >
-            Add a client →
+            Add a client
           </Link>
         </div>
       ) : (
-        <div className="border-t border-hairline">
-          <div className="grid grid-cols-12 py-3 border-b border-hairline font-mono text-[10px] uppercase tracking-widest text-muted">
-            <div className="col-span-5 px-2">Name</div>
-            <div className="col-span-4 px-2">Email</div>
-            <div className="col-span-2 px-2 text-right">Invoices</div>
-            <div className="col-span-1 px-2" />
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {clients.map((c) => (
-            <div
-              key={c.id}
-              className="grid grid-cols-12 items-baseline py-4 border-b border-hairline gap-2"
-            >
-              <div className="col-span-5 px-2">{c.name}</div>
-              <div className="col-span-4 px-2 text-muted text-sm">
-                {c.email ?? "—"}
+            <div key={c.id} className="card p-5 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-full gradient-blue flex items-center justify-center text-white font-semibold">
+                  {c.name[0]?.toUpperCase()}
+                </div>
+                <h3 className="font-semibold tracking-tight mt-3">{c.name}</h3>
+                {c.email && (
+                  <p className="text-sm text-muted mt-0.5 truncate">{c.email}</p>
+                )}
               </div>
-              <div className="col-span-2 px-2 text-right font-mono tabular">
-                {c._count.invoices}
-              </div>
-              <div className="col-span-1 px-2 text-right">
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/40">
+                <span className="text-xs text-muted">
+                  {c._count.invoices} invoice{c._count.invoices === 1 ? "" : "s"}
+                </span>
                 <form action={deleteClientAction}>
                   <input type="hidden" name="id" value={c.id} />
                   <button
                     type="submit"
-                    className="font-mono text-[10px] uppercase tracking-widest text-muted hover:text-red-700"
+                    className="text-xs text-red-600 hover:underline underline-offset-4"
                   >
                     Delete
                   </button>

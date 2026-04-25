@@ -1,56 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf7;
-  --foreground: #0a0a0a;
-  --muted: #6b6b6b;
-  --hairline: #e5e5e0;
-  --border: #1a1a1a;
+  --background: #f5f5f7;
+  --surface: #ffffff;
+  --foreground: #1d1d1f;
+  --muted: #86868b;
+  --border: #d2d2d7;
+  --accent: #0066ff;
+  --accent-hover: #0055d4;
+  --success: #00875a;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --color-hairline: var(--hairline);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-instrument-serif);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "ss01", "cv01";
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "ss01", "cv01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
 }
 
-/* Numbers always tabular when used in tables / money */
 .tabular {
   font-variant-numeric: tabular-nums;
 }
 
-/* Distinctive serif display class */
-.serif {
-  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+/* Soft gradient surface for hero cards */
+.gradient-surface {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+}
+.gradient-blue {
+  background: linear-gradient(135deg, #0066ff 0%, #0099ff 100%);
+}
+.gradient-violet {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+}
+.gradient-emerald {
+  background: linear-gradient(135deg, #00875a 0%, #10b981 100%);
 }
 
-/* Underline-on-hover link, no color shift */
-a.linky,
-.linky a {
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-a.linky:hover,
-.linky a:hover {
-  text-decoration: underline;
+/* Card surface used everywhere */
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-/* A subtle one-pixel grid for hero sections, no AI "purple gradient" vibes */
-.gridlines {
-  background-image:
-    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
-  background-size: 64px 64px;
-  background-position: -1px -1px;
+/* Bento helpers — span syntax for grid items */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
 }

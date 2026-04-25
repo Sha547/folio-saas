@@ -16,77 +16,90 @@ export default async function InvoicesPage() {
   });
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       <div className="flex items-end justify-between">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-            Money owed (or paid)
-          </p>
-          <h1 className="serif text-5xl">Invoices</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Invoices</h1>
+          <p className="text-muted mt-1">All invoices in this workspace.</p>
         </div>
         <Link
           href="/invoices/new"
-          className="bg-foreground text-background px-4 py-2 hover:bg-neutral-800 inline-flex items-center gap-2"
+          className="bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-full font-medium transition shadow-md shadow-accent/20"
         >
-          New invoice <span aria-hidden>→</span>
+          + New invoice
         </Link>
       </div>
 
       {invoices.length === 0 ? (
-        <div className="border border-dashed border-hairline px-6 py-20 text-center">
-          <p className="serif text-2xl">No invoices yet.</p>
-          <p className="text-muted mt-2">Send your first one.</p>
+        <div className="card p-16 text-center">
+          <div className="text-4xl mb-3">📄</div>
+          <h2 className="text-xl font-semibold tracking-tight">
+            No invoices yet
+          </h2>
+          <p className="text-muted mt-1">
+            Send your first one to start tracking payments.
+          </p>
           <Link
             href="/invoices/new"
-            className="mt-6 inline-block hover:underline underline-offset-4"
+            className="mt-6 inline-block bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-full font-medium transition"
           >
-            Create one →
+            Create one
           </Link>
         </div>
       ) : (
-        <div className="border-t border-hairline">
-          <div className="grid grid-cols-12 py-3 border-b border-hairline font-mono text-[10px] uppercase tracking-widest text-muted">
-            <div className="col-span-2 px-2">Number</div>
-            <div className="col-span-4 px-2">Client</div>
-            <div className="col-span-2 px-2">Due</div>
-            <div className="col-span-2 px-2 text-right">Amount</div>
-            <div className="col-span-2 px-2 text-right">Status</div>
-          </div>
-          {invoices.map((inv) => (
-            <Link
-              key={inv.id}
-              href={`/invoices/${inv.id}`}
-              className="grid grid-cols-12 items-baseline py-4 border-b border-hairline gap-2 hover:bg-foreground/[0.02]"
-            >
-              <div className="col-span-2 px-2 font-mono text-sm">{inv.number}</div>
-              <div className="col-span-4 px-2">{inv.client.name}</div>
-              <div className="col-span-2 px-2 text-sm text-muted font-mono">
-                {inv.dueDate.toLocaleDateString()}
-              </div>
-              <div className="col-span-2 px-2 text-right font-mono tabular">
-                {currency.format(inv.total)}
-              </div>
-              <div className="col-span-2 px-2 flex justify-end">
-                <Status status={inv.status} />
-              </div>
-            </Link>
-          ))}
+        <div className="card overflow-hidden">
+          <ul className="divide-y divide-border/40">
+            {invoices.map((inv) => (
+              <li key={inv.id}>
+                <Link
+                  href={`/invoices/${inv.id}`}
+                  className="px-6 py-4 grid grid-cols-12 items-center gap-4 hover:bg-foreground/[0.02] transition"
+                >
+                  <span className="col-span-3 sm:col-span-2 font-mono text-sm font-medium">
+                    {inv.number}
+                  </span>
+                  <span className="col-span-9 sm:col-span-4 text-sm">
+                    {inv.client.name}
+                  </span>
+                  <span className="hidden sm:block sm:col-span-2 text-xs text-muted font-mono">
+                    Due {inv.dueDate.toLocaleDateString()}
+                  </span>
+                  <span className="col-span-6 sm:col-span-2 text-sm font-mono tabular text-right sm:text-left">
+                    {currency.format(inv.total)}
+                  </span>
+                  <div className="col-span-6 sm:col-span-2 flex justify-end">
+                    <StatusPill status={inv.status} />
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
   );
 }
 
-function Status({ status }: { status: string }) {
-  const tone: Record<string, string> = {
-    draft: "bg-neutral-400",
+function StatusPill({ status }: { status: string }) {
+  const styles: Record<string, string> = {
+    draft: "bg-neutral-100 text-neutral-700",
+    sent: "bg-amber-100 text-amber-700",
+    paid: "bg-emerald-100 text-emerald-700",
+    overdue: "bg-red-100 text-red-700",
+  };
+  const dots: Record<string, string> = {
+    draft: "bg-neutral-500",
     sent: "bg-amber-500",
-    paid: "bg-green-600",
+    paid: "bg-emerald-600",
     overdue: "bg-red-600",
   };
   return (
-    <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted">
-      <span className={`inline-block w-1.5 h-1.5 rounded-full ${tone[status] ?? "bg-neutral-400"}`} />
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium capitalize ${
+        styles[status] ?? styles.draft
+      }`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${dots[status] ?? dots.draft}`} />
       {status}
     </span>
   );

@@ -13,35 +13,40 @@ export default async function NewInvoicePage() {
 
   if (clients.length === 0) {
     return (
-      <div className="max-w-xl">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-          Hold on
-        </p>
-        <h1 className="serif text-5xl">You need a client first.</h1>
-        <p className="mt-3 text-muted">
-          Add someone you bill, then come back here.
+      <div className="max-w-xl mx-auto card p-12 text-center">
+        <div className="text-4xl mb-3">👤</div>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Add a client first
+        </h1>
+        <p className="text-muted mt-2">
+          You need at least one client before creating an invoice.
         </p>
         <Link
           href="/clients/new"
-          className="mt-8 inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 hover:bg-neutral-800"
+          className="mt-6 inline-block bg-accent hover:bg-[var(--accent-hover)] text-white px-5 py-2.5 rounded-full font-medium transition"
         >
-          Add a client <span aria-hidden>→</span>
+          Add a client →
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-        New
-      </p>
-      <h1 className="serif text-5xl">Compose an invoice.</h1>
-      <p className="mt-3 text-muted">
-        Add line items. We&apos;ll handle the totals.
-      </p>
-      <div className="mt-12">
-        <NewInvoiceForm clients={clients} />
+    <div className="max-w-3xl mx-auto">
+      <Link
+        href="/invoices"
+        className="text-sm text-muted hover:text-foreground inline-flex items-center gap-1 mb-4"
+      >
+        ← Invoices
+      </Link>
+      <div className="card p-8">
+        <h1 className="text-2xl font-bold tracking-tight">New invoice</h1>
+        <p className="text-muted mt-1 text-sm">
+          Add line items. We&apos;ll handle the totals.
+        </p>
+        <div className="mt-8">
+          <NewInvoiceForm clients={clients} />
+        </div>
       </div>
     </div>
   );
