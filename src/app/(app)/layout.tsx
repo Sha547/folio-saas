@@ -15,10 +15,10 @@ export default async function AppLayout({
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center gap-8">
           <Link href="/dashboard" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg gradient-blue flex items-center justify-center text-white text-sm font-bold">
-              L
+              F
             </div>
             <span className="font-semibold tracking-tight hidden sm:inline">
-              Ledger
+              Folio
             </span>
           </Link>
 

@@ -9,7 +9,7 @@ export default function SignupPage() {
           href="/"
           className="block text-center font-semibold text-lg tracking-tight mb-10 hover:opacity-70 transition"
         >
-          Ledger
+          Folio
         </Link>
         <div className="card p-8">
           <h1 className="text-2xl font-bold tracking-tight">

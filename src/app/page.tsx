@@ -10,7 +10,7 @@ export default async function Home() {
       <header className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border/40">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="font-semibold text-lg tracking-tight">
-            Ledger
+            Folio
           </Link>
           <nav className="flex items-center gap-2 text-sm">
             {isAuthed ? (
@@ -137,7 +137,7 @@ export default async function Home() {
               Multiple workspaces
             </h3>
             <p className="text-sm text-muted mt-1">
-              One business or many. Each gets its own clean ledger.
+              One business or many. Each gets its own clean set of books.
             </p>
           </div>
 
@@ -181,7 +181,7 @@ export default async function Home() {
         </section>
 
         <footer className="mt-20 py-8 flex items-center justify-between text-sm text-muted">
-          <div>© {new Date().getFullYear()} Ledger</div>
+          <div>© {new Date().getFullYear()} Folio</div>
           <div className="font-mono text-xs">
             Next.js · Prisma · Claude
           </div>

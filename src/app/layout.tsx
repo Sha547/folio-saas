@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ledger — invoices and expenses, beautifully.",
+  title: "Folio — invoices and expenses, beautifully.",
   description:
     "Send invoices, track expenses, and let AI read your receipts. Built for freelancers and small teams.",
 };
