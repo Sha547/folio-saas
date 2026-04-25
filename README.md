@@ -11,7 +11,7 @@ AI read receipts.
 
 - Multi-tenant auth with isolated workspaces (Auth.js v5, JWT)
 - Auto-numbered invoices (INV-0001…) with line items, tax, and PDF download
-- AI receipt parsing — Claude vision + Zod-typed structured outputs
+- AI receipt parsing + Zod-typed structured outputs
 - Expense tracking with categories and monthly totals
 - One workspace per user, created atomically on signup
 - Server-rendered React PDFs, downloadable per invoice
@@ -19,7 +19,7 @@ AI read receipts.
 ## Stack
 
 **Next.js 16** · **TypeScript** · **Tailwind v4** · **Prisma 6** ·
-**Auth.js v5** · **Anthropic Claude** · **@react-pdf/renderer** · **Zod**
+**Auth.js v5** · **@react-pdf/renderer** · **Zod**
 
 ## How it works
 
