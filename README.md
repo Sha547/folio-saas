@@ -5,6 +5,8 @@
 A multi-tenant SaaS for freelancers — send invoices, track expenses, and let
 AI read receipts.
 
+**[→ Live demo](https://folio-saas-one.vercel.app/)**
+
 ![Dashboard](screenshots/dashboard.png)
 
 ## Features
