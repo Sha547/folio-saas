@@ -36,7 +36,10 @@ export default async function InvoicePage({
       </Link>
 
       {/* Hero card */}
-      <div className="card p-8 gradient-surface">
+      <div
+        className="card p-8"
+        style={{ background: "linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%)" }}
+      >
         <div className="flex items-start justify-between">
           <div>
             <p className="font-mono text-sm text-muted">{invoice.number}</p>

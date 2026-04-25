@@ -35,20 +35,6 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Soft gradient surface for hero cards */
-.gradient-surface {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-}
-.gradient-blue {
-  background: linear-gradient(135deg, #0066ff 0%, #0099ff 100%);
-}
-.gradient-violet {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-}
-.gradient-emerald {
-  background: linear-gradient(135deg, #00875a 0%, #10b981 100%);
-}
-
 /* Card surface used everywhere */
 .card {
   background: var(--surface);

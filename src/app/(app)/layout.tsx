@@ -14,7 +14,10 @@ export default async function AppLayout({
       <header className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border/40">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center gap-8">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg gradient-blue flex items-center justify-center text-white text-sm font-bold">
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-sm font-bold"
+              style={{ background: "linear-gradient(135deg, #0066ff 0%, #0099ff 100%)" }}
+            >
               F
             </div>
             <span className="font-semibold tracking-tight hidden sm:inline">

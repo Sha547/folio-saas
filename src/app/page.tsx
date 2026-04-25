@@ -75,7 +75,10 @@ export default async function Home() {
         {/* Bento grid */}
         <section id="features" className="mt-24 bento auto-rows-[180px]">
           {/* Big card — invoices */}
-          <div className="col-span-12 md:col-span-7 row-span-2 card p-8 gradient-surface flex flex-col justify-between overflow-hidden relative">
+          <div
+            className="col-span-12 md:col-span-7 row-span-2 card p-8 flex flex-col justify-between overflow-hidden relative"
+            style={{ background: "linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%)" }}
+          >
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-medium text-accent mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
@@ -105,7 +108,10 @@ export default async function Home() {
           </div>
 
           {/* AI receipts — gradient card */}
-          <div className="col-span-12 md:col-span-5 row-span-2 card p-8 gradient-violet text-white flex flex-col justify-between overflow-hidden">
+          <div
+            className="col-span-12 md:col-span-5 row-span-2 card p-8 text-white flex flex-col justify-between overflow-hidden"
+            style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+          >
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-medium text-white/80 mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-white" />
@@ -153,7 +159,10 @@ export default async function Home() {
           </div>
 
           {/* Free */}
-          <div className="col-span-12 md:col-span-4 card p-6 gradient-emerald text-white">
+          <div
+            className="col-span-12 md:col-span-4 card p-6 text-white"
+            style={{ background: "linear-gradient(135deg, #00875a 0%, #10b981 100%)" }}
+          >
             <div className="text-3xl mb-2">✦</div>
             <h3 className="font-semibold text-lg tracking-tight">
               Free to start

@@ -57,7 +57,10 @@ export default function NewExpenseForm({ aiEnabled }: { aiEnabled: boolean }) {
         <span className="text-sm font-medium flex items-center gap-2">
           Receipt
           {aiEnabled && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold gradient-violet text-white">
+            <span
+              className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-white"
+              style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
+            >
               AI
             </span>
           )}

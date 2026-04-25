@@ -49,7 +49,10 @@ export default async function ClientsPage() {
           {clients.map((c) => (
             <div key={c.id} className="card p-5 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded-full gradient-blue flex items-center justify-center text-white font-semibold">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold"
+                  style={{ background: "linear-gradient(135deg, #0066ff 0%, #0099ff 100%)" }}
+                >
                   {c.name[0]?.toUpperCase()}
                 </div>
                 <h3 className="font-semibold tracking-tight mt-3">{c.name}</h3>

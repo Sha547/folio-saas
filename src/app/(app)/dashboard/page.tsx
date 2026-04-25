@@ -55,7 +55,10 @@ export default async function DashboardPage() {
       {/* Bento stats */}
       <section className="bento auto-rows-[140px]">
         {/* Big paid card */}
-        <div className="col-span-12 md:col-span-6 row-span-2 card p-6 gradient-blue text-white relative overflow-hidden">
+        <div
+          className="col-span-12 md:col-span-6 row-span-2 card p-6 text-white relative overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0066ff 0%, #0099ff 100%)" }}
+        >
           <div className="relative z-10">
             <p className="text-xs font-medium text-white/80 uppercase tracking-wider">
               Paid lifetime
