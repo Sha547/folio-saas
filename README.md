@@ -5,7 +5,7 @@
 A multi-tenant SaaS for freelancers — send invoices, track expenses, and let
 AI read receipts.
 
-![Expenses](screenshots/expenses.png)
+![Dashboard](screenshots/dashboard.png)
 
 ## Features
 
@@ -20,6 +20,12 @@ AI read receipts.
 
 **Next.js 16** · **TypeScript** · **Tailwind v4** · **Prisma 6** ·
 **Auth.js v5** · **@react-pdf/renderer** · **Zod**
+
+## A look around
+
+![Invoice detail](screenshots/invoice-detail.png)
+
+![Expenses](screenshots/expenses.png)
 
 ## How it works
 
